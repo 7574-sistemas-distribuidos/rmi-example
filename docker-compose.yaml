@@ -1,0 +1,29 @@
+version: '3'
+services:
+  server:
+    container_name: rmi-example-server
+    build:
+      context: .
+      dockerfile: server.dockerfile
+    image: rmi-server:0.0.1
+    networks:
+      simple-rmi-example:
+        ipv4_address: 172.24.125.2
+
+  client:
+    build:
+      context: .
+      dockerfile: client.dockerfile
+    image: rmi-client:0.0.1
+    networks:
+      simple-rmi-example:
+        ipv4_address: 172.24.125.3
+    depends_on:
+      - server
+networks:
+  simple-rmi-example:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.24.125.0/16
+
